@@ -169,6 +169,8 @@ class Spacetimeformer_Forecaster(stf.Forecaster):
 
     def compute_loss(self, batch, time_mask=None, forward_kwargs={}):
         x_c, y_c, x_t, y_t = batch
+        #mod
+        #print(f"\nx_c {x_c.shape}, y_c {y_c.shape}, x_t {x_t.shape}, y_t {y_t.shape}")
         outputs, (logits, labels) = self(x_c, y_c, x_t, y_t, **forward_kwargs)
 
         forecast_loss, mask = self.forecasting_loss(
@@ -218,6 +220,12 @@ class Spacetimeformer_Forecaster(stf.Forecaster):
             output_attention=output_attn,
         )
 
+        #mod
+        '''
+        print(f'\noutput {output},\n \
+            (logits {logits.shape}, labels {labels.shape}),\n \
+            (output_attn {output_attn}')
+        '''
         if output_attn:
             return output, (logits, labels), attn
         return output, (logits, labels)

@@ -475,20 +475,33 @@ def main(args):
     if args.wandb:
         import wandb
 
-        project = os.getenv("STF_WANDB_PROJ")
-        entity = os.getenv("STF_WANDB_ACCT")
-        log_dir = os.getenv("STF_LOG_DIR")
+        #mod
+        import os
+        os.environ["PYTHONWARNINGS"] = "ignore:semaphore_tracker:UserWarning"
+        STF_WANDB_ACCT="luca_maurici"
+        STF_WANDB_PROJ="EEG connectivity estimate with transformers"
+        # optionally: change wandb logging directory (defaults to ./data/STF_LOG_DIR)
+        STF_LOG_DIR="./data/STF_LOG_DIR"    
+
+        #mod
+        project = STF_WANDB_PROJ
+        entity = STF_WANDB_ACCT
+        log_dir = STF_LOG_DIR
         if log_dir is None:
             log_dir = "./data/STF_LOG_DIR"
             print(
                 "Using default wandb log dir path of ./data/STF_LOG_DIR. This can be adjusted with the environment variable `STF_LOG_DIR`"
             )
+
+        print(f'\nproject {project}, entity {entity}')
+
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
         assert (
             project is not None and entity is not None
         ), "Please set environment variables `STF_WANDB_ACCT` and `STF_WANDB_PROJ` with \n\
             your wandb user/organization name and project title, respectively."
+
         experiment = wandb.init(
             project=project,
             entity=entity,
@@ -565,7 +578,7 @@ def main(args):
         gpus=args.gpus,
         callbacks=callbacks,
         logger=logger if args.wandb else None,
-        accelerator="dp",
+        accelerator="auto",
         gradient_clip_val=args.grad_clip_norm,
         gradient_clip_algorithm="norm",
         overfit_batches=20 if args.debug else 0,
@@ -573,6 +586,7 @@ def main(args):
         sync_batchnorm=True,
         val_check_interval=args.val_check_interval,
         limit_val_batches=args.limit_val_batches,
+        max_epochs=20
     )
 
     # Train

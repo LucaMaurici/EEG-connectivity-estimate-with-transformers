@@ -223,6 +223,9 @@ class Spacetimeformer(nn.Module):
     ):
         batch_size = x_enc.shape[0]
 
+        #mod
+        #print("\nx_enc.shape ", x_enc.shape)
+
         enc_vt_emb, enc_s_emb, enc_var_idxs = self.enc_embedding(y=x_enc, x=x_mark_enc)
         enc_out, enc_self_attns = self.encoder(
             val_time_emb=enc_vt_emb,
@@ -249,6 +252,9 @@ class Spacetimeformer(nn.Module):
             forecast_out = forecast_out[:, self.start_token_len :, :]
             means, log_stds = forecast_out.chunk(2, dim=-1)
 
+        #mod
+        #print(f'\nforecast_out {forecast_out}')
+
         # stabilization trick from Neural Processes papers
         stds = 1e-3 + (1.0 - 1e-3) * torch.log(1.0 + log_stds.exp())
 
@@ -263,6 +269,12 @@ class Spacetimeformer(nn.Module):
         else:
             classifier_enc_out, enc_var_idxs = None, None
 
+        #mod
+        '''
+        print(f'\npred_distrib {pred_distrib},\n \
+            (classifier_enc_out {classifier_enc_out.shape}, enc_var_idxs {enc_var_idxs.shape}),\n \
+            (enc_self_attns {enc_self_attns}, dec_cross_attns {dec_cross_attns})')
+        '''
         return (
             pred_distrib,
             (classifier_enc_out, enc_var_idxs),
