@@ -437,14 +437,14 @@ def create_callbacks(config):
         dirpath=f"./data/stf_model_checkpoints/{config.run_name}_{''.join([str(random.randint(0,9)) for _ in range(9)])}",
         monitor="val/mse",
         mode="min",
-        filename=f"{config.run_name}" + "{epoch:02d}-{val/mse:.2f}",
+        filename=f"{config.run_name}" + "{epoch:02d}-{val/norm_mse:.2f}", #mod val/mse
         save_top_k=1,
     )
     callbacks = [saving]
 
     callbacks.append(
         pl.callbacks.early_stopping.EarlyStopping(
-            monitor="val/loss",
+            monitor="val/norm_mse", #mod val/loss
             patience=10,
         )
     )
