@@ -191,6 +191,8 @@ class CSVTorchDset(Dataset):
         self.target_points = target_points
         self.time_resolution = time_resolution
 
+        print(time_resolution)
+
         self._slice_start_points = [
             i
             for i in range(

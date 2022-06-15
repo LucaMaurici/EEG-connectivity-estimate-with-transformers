@@ -210,6 +210,8 @@ class Forecaster(pl.LightningModule, ABC):
             batch=batch, time_mask=time_mask, forward_kwargs=kwargs,
         )
         *_, y_t = batch
+        print(f"yt {yt.shape}") # mod
+        print(f"output {output.shape}")  # mod
         stats = self._compute_stats(mask * output, mask * torch.nan_to_num(y_t))
         stats["loss"] = loss
         return stats

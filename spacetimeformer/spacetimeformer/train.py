@@ -586,7 +586,7 @@ def main(args):
         sync_batchnorm=True,
         val_check_interval=args.val_check_interval,
         limit_val_batches=args.limit_val_batches,
-        max_epochs=20
+        max_epochs=200
     )
 
     # Train
