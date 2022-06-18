@@ -38,6 +38,8 @@ class Forecaster(pl.LightningModule, ABC):
         self.d_yc = d_yc
         self.d_yt = d_yt
 
+        print("\n\n\n\n||||||||||||||||||||INIT||||||||||||||||||||||\n\n\n\n")
+
     def set_null_value(self, val: float) -> None:
         self.null_value = val
 
@@ -210,6 +212,8 @@ class Forecaster(pl.LightningModule, ABC):
             batch=batch, time_mask=time_mask, forward_kwargs=kwargs,
         )
         *_, y_t = batch
+        print("\n\n\n----------------------------------------------\n \
+            ------------- FORECASTER STEP ---------------\n")
         print(f"yt {yt.shape}") # mod
         print(f"output {output.shape}")  # mod
         stats = self._compute_stats(mask * output, mask * torch.nan_to_num(y_t))

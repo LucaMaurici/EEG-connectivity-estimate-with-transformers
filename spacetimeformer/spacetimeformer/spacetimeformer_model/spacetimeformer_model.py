@@ -145,8 +145,10 @@ class Spacetimeformer_Forecaster(stf.Forecaster):
         stats = self._compute_stats(mask * output, mask * torch.nan_to_num(y_t))
         stats["forecast_loss"] = forecast_loss
         stats["class_loss"] = class_loss
-        stats["loss"] = forecast_loss + self.class_loss_imp * class_loss
+        stats["loss"] = forecast_loss# + self.class_loss_imp * class_loss
         stats["acc"] = acc
+        print("\n\n\n----------------------------------------------\n \
+            ------------- SPACETIMEFORMER MODEL STEP ---------------\n")
         return stats
 
     def classification_loss(

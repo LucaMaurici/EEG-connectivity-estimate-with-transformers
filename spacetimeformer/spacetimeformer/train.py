@@ -145,6 +145,10 @@ def create_model(config):
         x_dim = 6
         yc_dim = 18
         yt_dim = 18
+    elif config.dset == "toy_eeg":
+        x_dim = 1
+        yc_dim = 20
+        yt_dim = 20
     assert x_dim is not None
     assert yc_dim is not None
     assert yt_dim is not None

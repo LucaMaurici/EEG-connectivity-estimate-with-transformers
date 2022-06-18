@@ -10,10 +10,12 @@ import sys
 import seaborn as sns
 import os
 
-DATASET = "toy2" # eeg
-MODEL = "spacetimeformer"
+#DATASET = "toy2" # eeg
+#MODEL = "spacetimeformer"
 #checkpoint_path = './data/stf_model_checkpoints/spatiotemporal_toy2_935412254/spatiotemporal_toy2epoch=18-val/norm_mse=0.19.ckpt'
-checkpoint_path = './data/stf_model_checkpoints/spatiotemporal_toy2_658193677/spatiotemporal_toy2epoch=24-val/norm_mse=0.13.ckpt'
+#checkpoint_path = './data/stf_model_checkpoints/spatiotemporal_toy2_658193677/spatiotemporal_toy2epoch=24-val/norm_mse=0.13.ckpt'
+checkpoint_path = './data/stf_model_checkpoints/spatiotemporal_crypto_453982348/spatiotemporal_cryptoepoch=04-val/norm_mse=0.22.ckpt'
+
 
 def create_parser():
     model = sys.argv[1]
@@ -23,7 +25,7 @@ def create_parser():
     parser.add_argument("model")
     parser.add_argument("dset")
 
-    if dset=='toy2':
+    if dset=='toy2' or dset=='crypto':
         stf.data.CSVTimeSeries.add_cli(parser)
         stf.data.CSVTorchDset.add_cli(parser)
     stf.data.DataModule.add_cli(parser)
@@ -137,15 +139,15 @@ def create_model_old():
 
 def create_model(config):
     x_dim, yc_dim, yt_dim = None, None, None
-    if DATASET == "exchange":
+    if config.dset == "exchange":
         x_dim = 6
         yc_dim = 8
         yt_dim = 8
-    elif DATASET == "toy2":
+    elif config.dset == "toy2":
         x_dim = 6
         yc_dim = 20
         yt_dim = 20
-    elif DATASET == "crypto":
+    elif config.dset == "crypto":
         x_dim = 6
         yc_dim = 18
         yt_dim = 18
@@ -153,7 +155,7 @@ def create_model(config):
     assert yc_dim is not None
     assert yt_dim is not None
 
-    if MODEL == "spacetimeformer":
+    if config.model == "spacetimeformer":
         forecaster = stf.spacetimeformer_model.Spacetimeformer_Forecaster(
             d_x=x_dim,
             d_yc=yc_dim,
@@ -341,17 +343,23 @@ def main(args):
     # Make a prediction
     forecaster.to("cuda")
     yt_pred = forecaster.predict(xc, yc, xt)
-    print(f"xc {xc.shape}, yc {yc.shape}, xt {xt.shape}, yt {yt.shape}")
-    print(f"yt_pred {yt_pred.shape}")
+    print(f"xc {xc}, yc {yc}, xt {xt}, yt {yt}")
+    print(f"yt_pred {yt_pred}")
 
     # Plotting a prediction
-    os.mkdir("./plots/"+checkpoint_path[29:59])
-    plt.plot(yc[0,:,1:5])
+    if not os.path.exists("./plots/"+checkpoint_path[29:59]):
+        os.mkdir("./plots/"+checkpoint_path[29:59])
+
+    plt.plot([*yc[0,:,0], *yt[0,:,0]])
+    plt.plot([*yc[0,:,0], *yt_pred[0,:,0]])
+    plt.savefig("./plots/"+checkpoint_path[29:59]+"/yc+yt.png")
+
+    plt.plot(yc[0,:,0])
     plt.savefig("./plots/"+checkpoint_path[29:59]+"/yc.png")
     plt.show()
 
-    plt.plot(yt[0,:,1:5])
-    plt.plot(yt_pred[0,:,1:5])
+    plt.plot(yt[0,:,0])
+    plt.plot(yt_pred[0,:,0])
     plt.savefig("./plots/"+checkpoint_path[29:59]+"/yt_and_yt_pred.png")
     plt.show()
 

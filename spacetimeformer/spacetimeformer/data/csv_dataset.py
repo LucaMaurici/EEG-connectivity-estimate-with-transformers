@@ -58,6 +58,7 @@ class CSVTimeSeries:
             time_df, raw_df, use_features=time_features
         )
         self.time_cols = df.columns.difference(raw_df.columns)
+        print(f"\n\n---------------self.time_cols {self.time_cols}---------------------\n\n")
 
         # Train/Val/Test Split using holdout approach #
 
@@ -85,12 +86,19 @@ class CSVTimeSeries:
         test_intervals = [(test_interval_low, test_interval_high)]
 
         train_mask = df[self.time_col_name] > pd.Timestamp.min
+        #print(f"\n\n---------------train_mask {train_mask}---------------------\n\n")
         val_mask = df[self.time_col_name] > pd.Timestamp.max
+        #print(f"\n\n---------------val_mask {val_mask}---------------------\n\n")
         test_mask = df[self.time_col_name] > pd.Timestamp.max
+        #print(f"\n\n---------------test_mask {test_mask}---------------------\n\n")
         train_mask = mask_intervals(train_mask, test_intervals, False)
         train_mask = mask_intervals(train_mask, val_intervals, False)
         val_mask = mask_intervals(val_mask, val_intervals, True)
         test_mask = mask_intervals(test_mask, test_intervals, True)
+
+        print(f"\n\n---------------train_mask {train_mask}---------------------\n\n")
+        print(f"\n\n---------------val_mask {val_mask}---------------------\n\n")
+        print(f"\n\n---------------test_mask {test_mask}---------------------\n\n")
 
         if (train_mask == False).all():
             print(f"No training data detected for file {data_path}")
@@ -107,7 +115,9 @@ class CSVTimeSeries:
             self._train_data[target_cols + self.exo_cols].values
         )
         self._train_data = self.apply_scaling_df(df[train_mask])
+        print(f"\n\n---------------self._train_data {self._train_data}---------------------\n\n")
         self._val_data = self.apply_scaling_df(df[val_mask])
+        print(f"\n\n---------------self._val_data {self._val_data}---------------------\n\n")
         self._test_data = self.apply_scaling_df(df[test_mask])
 
     def get_slice(self, split, start, stop, skip):
@@ -148,6 +158,8 @@ class CSVTimeSeries:
         # if the array dim is less than this length we start
         # slicing from the target cols
         dim = array.shape[-1]
+        print(f"\n\n----------\n self._scaler.scale_[:dim] {self._scaler.scale_[:dim]}")
+        print(f"self._scaler.mean_[:dim] {self._scaler.mean_[:dim]} \n----------------------\n\n")
         return (array * self._scaler.scale_[:dim]) + self._scaler.mean_[:dim]
         # return self._scaler.inverse_transform(array)
 
@@ -191,7 +203,7 @@ class CSVTorchDset(Dataset):
         self.target_points = target_points
         self.time_resolution = time_resolution
 
-        print(time_resolution)
+        print(f"self.series.length(split) {self.series.length(split)}")
 
         self._slice_start_points = [
             i
@@ -230,6 +242,8 @@ class CSVTorchDset(Dataset):
         trgt_x = trgt_slice[self.series.time_cols]
         ctxt_y = ctxt_slice[self.series.target_cols + self.series.exo_cols]
         trgt_y = trgt_slice[self.series.target_cols]
+
+        print(f"CSV DATASET ctxt_x {ctxt_x}, ctxt_y {ctxt_y}, trgt_x {trgt_x}, trgt_y {trgt_y}")
 
         return self._torch(ctxt_x, ctxt_y, trgt_x, trgt_y)
 
