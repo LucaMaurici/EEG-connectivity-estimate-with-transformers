@@ -1,3 +1,5 @@
+#train_eeg
+
 from argparse import ArgumentParser
 import random
 import sys
@@ -26,7 +28,8 @@ _DSETS = [
     "cifar",
     "copy",
     "crypto",
-    "toy_eeg"
+    "toy_eeg",
+    "eeg_social_memory"
 ]
 
 
@@ -148,8 +151,12 @@ def create_model(config):
         yt_dim = 18
     elif config.dset == "toy_eeg":
         x_dim = 6
-        yc_dim = 29
-        yt_dim = 29
+        yc_dim = 5
+        yt_dim = 5
+    elif config.dset == 'eeg_social_memory':
+        x_dim = 6
+        yc_dim = 5
+        yt_dim = 5
     assert x_dim is not None
     assert yc_dim is not None
     assert yt_dim is not None
@@ -216,6 +223,7 @@ def create_model(config):
             linear_window=config.linear_window,
         )
     elif config.model == "spacetimeformer":
+        '''
         forecaster = stf.spacetimeformer_model.Spacetimeformer_Forecaster(
             d_x=x_dim,
             d_yc=yc_dim,
@@ -228,7 +236,7 @@ def create_model(config):
             d_layers=config.dec_layers,
             d_ff=config.d_ff,
             dropout_emb=config.dropout_emb,
-            dropout_token=config.dropout_token,
+            #dropout_token=config.dropout_token,  # mod commented
             dropout_attn_out=config.dropout_attn_out,
             dropout_qkv=config.dropout_qkv,
             dropout_ff=config.dropout_ff,
@@ -238,7 +246,7 @@ def create_model(config):
             local_cross_attn=config.local_cross_attn,
             performer_kernel=config.performer_kernel,
             performer_redraw_interval=config.performer_redraw_interval,
-            post_norm=config.post_norm,
+            #post_norm=config.post_norm,  # mod commented
             norm=config.norm,
             activation=config.activation,
             init_lr=config.init_lr,
@@ -254,6 +262,73 @@ def create_model(config):
             class_loss_imp=config.class_loss_imp,
             time_emb_dim=config.time_emb_dim,
             null_value=config.null_value,
+        )
+        '''
+        # new
+        if hasattr(config, "context_points") and hasattr(config, "target_points"):
+            max_seq_len = config.context_points + config.target_points
+        elif hasattr(config, "max_len"):
+            max_seq_len = config.max_len
+        else:
+            raise ValueError("Undefined max_seq_len")
+        forecaster = stf.spacetimeformer_model.Spacetimeformer_Forecaster(
+            d_x=x_dim,
+            d_yc=yc_dim,
+            d_yt=yt_dim,
+            max_seq_len=max_seq_len,
+            start_token_len=config.start_token_len,
+            attn_factor=config.attn_factor,
+            d_model=config.d_model,
+            d_queries_keys=config.d_qk,
+            d_values=config.d_v,
+            n_heads=config.n_heads,
+            e_layers=config.enc_layers,
+            d_layers=config.dec_layers,
+            d_ff=config.d_ff,
+            dropout_emb=config.dropout_emb,
+            dropout_attn_out=config.dropout_attn_out,
+            dropout_attn_matrix=config.dropout_attn_matrix,
+            dropout_qkv=config.dropout_qkv,
+            dropout_ff=config.dropout_ff,
+            pos_emb_type=config.pos_emb_type,
+            use_final_norm=not config.no_final_norm,
+            global_self_attn=config.global_self_attn,
+            local_self_attn=config.local_self_attn,
+            global_cross_attn=config.global_cross_attn,
+            local_cross_attn=config.local_cross_attn,
+            performer_kernel=config.performer_kernel,
+            performer_redraw_interval=config.performer_redraw_interval,
+            attn_time_windows=config.attn_time_windows,
+            use_shifted_time_windows=config.use_shifted_time_windows,
+            norm=config.norm,
+            activation=config.activation,
+            init_lr=config.init_lr,
+            base_lr=config.base_lr,
+            warmup_steps=config.warmup_steps,
+            decay_factor=config.decay_factor,
+            initial_downsample_convs=config.initial_downsample_convs,
+            intermediate_downsample_convs=config.intermediate_downsample_convs,
+            embed_method=config.embed_method,
+            l2_coeff=config.l2_coeff,
+            loss=config.loss,
+            class_loss_imp=config.class_loss_imp,
+            recon_loss_imp=config.recon_loss_imp,
+            time_emb_dim=config.time_emb_dim,
+            null_value=config.null_value,
+            #pad_value=config.pad_value,  # mod commented
+            linear_window=config.linear_window,
+            use_revin=config.use_revin,
+            linear_shared_weights=config.linear_shared_weights,
+            use_seasonal_decomp=config.use_seasonal_decomp,
+            use_val=not config.no_val,
+            use_time=not config.no_time,
+            use_space=not config.no_space,
+            use_given=not config.no_given,
+            recon_mask_skip_all=config.recon_mask_skip_all,
+            recon_mask_max_seq_len=config.recon_mask_max_seq_len,
+            recon_mask_drop_seq=config.recon_mask_drop_seq,
+            recon_mask_drop_standard=config.recon_mask_drop_standard,
+            recon_mask_drop_full=config.recon_mask_drop_full,
         )
     elif config.model == "linear":
         forecaster = stf.linear_model.Linear_Forecaster(
@@ -295,8 +370,11 @@ def create_dset(config):
     PLOT_VAR_IDXS = None
     PLOT_VAR_NAMES = None
 
-    if config.dset == "toy_eeg":
-        data_path = "./data/toy_eeg/toy_eeg.pkl"
+    if 'eeg' in config.dset:
+        if config.dset == "toy_eeg":
+            data_path = "./data/toy_eeg/toy_eeg.pkl"
+        elif config.dset == "eeg_social_memory":
+            data_path = "./data/eeg_social_memory/eeg_social_memory_sub_20.pkl"
 
         dset = stf.data.EEGTimeSeries(
             data_path=data_path
@@ -313,8 +391,8 @@ def create_dset(config):
             batch_size=config.batch_size,
             workers=config.workers,
         )
-        INV_SCALER = dset.reverse_scaling_eeg
-        SCALER = dset.apply_scaling_eeg
+        INV_SCALER = dset.reverse_scaling
+        SCALER = dset.apply_scaling
         NULL_VAL = None
 
     return DATA_MODULE, INV_SCALER, SCALER, NULL_VAL, PLOT_VAR_IDXS, PLOT_VAR_NAMES
@@ -323,7 +401,8 @@ def create_dset(config):
 def create_callbacks(config):
     saving = pl.callbacks.ModelCheckpoint(
         dirpath=f"./data/stf_model_checkpoints/{config.run_name}_{''.join([str(random.randint(0,9)) for _ in range(9)])}",
-        monitor="val/mse",
+        #monitor="train/norm_mse", #modDebug "val/mse"
+        monitor="val/mse", #modDebug "val/mse"
         mode="min",
         filename=f"{config.run_name}" + "{epoch:02d}-{val/norm_mse:.2f}", #mod val/mse
         save_top_k=1,
@@ -332,8 +411,9 @@ def create_callbacks(config):
 
     callbacks.append(
         pl.callbacks.early_stopping.EarlyStopping(
-            monitor="val/norm_mse", #mod val/loss
-            patience=10,
+            monitor="train/norm_mse", #modDebug val/loss
+            monitor="val/loss", #modDebug val/loss
+            patience=20, #modDebug 5
         )
     )
 
@@ -417,6 +497,7 @@ def main(args):
 
     # Model
     args.null_value = null_val
+    #args.pad_value = pad_val  # new
     forecaster = create_model(args)
     forecaster.set_inv_scaler(inv_scaler)
     forecaster.set_scaler(scaler)
@@ -424,7 +505,7 @@ def main(args):
 
     # Callbacks
     callbacks = create_callbacks(args)
-    test_samples = next(iter(data_module.test_dataloader()))
+    test_samples, test_samples_unscaled = next(iter(data_module.test_dataloader()))
 
     if args.wandb and args.plot:
         callbacks.append(
@@ -469,24 +550,29 @@ def main(args):
         accelerator="auto",
         gradient_clip_val=args.grad_clip_norm,
         gradient_clip_algorithm="norm",
-        overfit_batches=20 if args.debug else 0,
+        overfit_batches=400 if args.debug else 0,
         accumulate_grad_batches=args.accumulate,
         sync_batchnorm=True,
         val_check_interval=args.val_check_interval,
         limit_val_batches=args.limit_val_batches,
-        max_epochs=200
+        max_epochs=400
     )
 
     # Train
     trainer.fit(forecaster, datamodule=data_module)
 
     # Test
-    trainer.test(datamodule=data_module, ckpt_path="best")
+    #trainer.test(datamodule=data_module, ckpt_path="best")
 
     # Predict (only here as a demo and test)
     forecaster.to("cuda")
-    xc, yc, xt, _ = test_samples
+    #xc, yc, xt, _ = test_samples  # mod
+    xc, yc_us, xt, _ = test_samples_unscaled
+    yc, scaler_data = scaler(yc_us)
+    yc = torch.from_numpy(yc).float()
     yt_pred = forecaster.predict(xc, yc, xt)
+
+    yt_pred_unscaled = inv_scaler(yt_pred, scaler_data)
 
     if args.wandb:
         experiment.finish()

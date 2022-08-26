@@ -44,10 +44,9 @@ class CopyTaskDset(Dataset):
         include_lags: bool = False,
     ):
         assert split in ["train", "val", "test"]
-        if lags:
-            assert len(lags) == copy_vars
-        else:
-            lags = [0 for _ in range(copy_vars)]
+        if lags is None:
+            lags = [j for j in range(0, length, length // copy_vars)]
+        assert len(lags) == copy_vars
         self.L = length
         self.N = copy_vars
         self.lag_N = lags

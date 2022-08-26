@@ -50,33 +50,121 @@ class EEGTimeSeries:
         val_idxs = trials_idxs[train_cutoff:val_cutoff]
         test_idxs = trials_idxs[val_cutoff:]
 
-        self._train_data = raw_data[train_idxs]
-        self._scaler = StandardScaler()
+        self._train_data_unscaled = raw_data[train_idxs]
+        self._val_data_unscaled = raw_data[val_idxs]
+        self._test_data_unscaled = raw_data[test_idxs]
+
+
+        # Plotting dataset sample before scaling
+        print(raw_data[test_idxs].shape)
+        yc = raw_data[test_idxs]
+        #Statistical properties mod
+        print(f"yc.shape: {yc.shape}")
+        mean_yc = np.mean(yc, axis=(0,1))
+        std_dev_yc = np.std(yc, axis=(0,1))
+        print("\n\n-----------Statistical properties before scaling------------")
+        print(f"mean yc: {mean_yc}")
+        print(f"std_dev yc: {std_dev_yc}")
+        print()
+
+        '''
+        self._scaler_train = StandardScaler()
+        self._scaler_val = StandardScaler()
+        self._scaler_test = StandardScaler()
+
         num_instances, num_time_steps, num_features = np.shape(self._train_data)
         self._train_data = np.reshape(self._train_data, newshape=(-1, num_features))
-        self._scaler = self._scaler.fit(self._train_data)
+        self._scaler_train = self._scaler_train.fit(self._train_data)
+        print(f"\nself._scaler_train.scale_: {self._scaler_train.scale_}\n")
+        print(f"\nself._scaler_train.mean_: {self._scaler_train.mean_}\n")
         self._train_data = np.reshape(self._train_data, newshape=(num_instances, num_time_steps, num_features))
 
-        self._train_data = self.apply_scaling_eeg(self._train_data)
+        num_instances, num_time_steps, num_features = np.shape(self._val_data)
+        self._val_data = np.reshape(self._val_data, newshape=(-1, num_features))
+        self._scaler_val = self._scaler_val.fit(self._val_data)
+        print(f"\nself._scaler_val.scale_: {self._scaler_val.scale_}\n")
+        print(f"\nself._scaler_val.mean_: {self._scaler_val.mean_}\n")
+        self._val_data = np.reshape(self._val_data, newshape=(num_instances, num_time_steps, num_features))
+
+        num_instances, num_time_steps, num_features = np.shape(self._test_data)
+        self._test_data = np.reshape(self._test_data, newshape=(-1, num_features))
+        self._scaler_test = self._scaler_test.fit(self._test_data)
+        print(f"\nself._scaler_test.scale_: {self._scaler_test.scale_}\n")
+        print(f"\nself._scaler_test.mean_: {self._scaler_test.mean_}\n")
+        self._test_data = np.reshape(self._test_data, newshape=(num_instances, num_time_steps, num_features))
+        '''
+
+        self._train_data, self._scaler_train = self.apply_scaling(raw_data[train_idxs])
         print(f"\n\n---------------self._train_data {self._train_data}---------------------\n\n")
-        self._val_data = self.apply_scaling_eeg(raw_data[val_idxs])
+        self._val_data, self._scaler_val = self.apply_scaling(raw_data[val_idxs])
         print(f"\n\n---------------self._val_data {self._val_data}---------------------\n\n")
-        self._test_data = self.apply_scaling_eeg(raw_data[test_idxs])
+        self._test_data, self._scaler_test = self.apply_scaling(raw_data[test_idxs])
         print(f"\n\n---------------self._test_data {self._test_data}---------------------\n\n")
 
         print(self._train_data.shape)
         print(self._val_data.shape)
         print(self._test_data.shape)
 
+        # Plotting dataset sample after scaling
+        yc = self._test_data
+        #Statistical properties mod
+        print(f"yc.shape: {yc.shape}")
+        mean_yc = np.mean(yc, axis=(0,1))
+        std_dev_yc = np.std(yc, axis=(0,1))
+        print("\n\n-----------Statistical properties after scaling------------")
+        print(f"mean yc: {mean_yc}")
+        print(f"std_dev yc: {std_dev_yc}")
+        print()
+
+        
+
     def get_slice(self, split, trial, start, stop, skip):
         assert split in ["train", "val", "test"]
         if split == "train":
-            return self.train_data[trial, start:stop:skip]
+            return self._train_data[trial, start:stop:skip], self._train_data_unscaled[trial, start:stop:skip]
         elif split == "val":
-            return self.val_data[trial, start:stop:skip]
+            return self._val_data[trial, start:stop:skip], self._val_data_unscaled[trial, start:stop:skip]
         else:
-            return self.test_data[trial, start:stop:skip]
+            return self._test_data[trial, start:stop:skip], self._test_data_unscaled[trial, start:stop:skip]
 
+
+    def apply_scaling(self, array):
+        print(np.shape(array))
+        num_instances, num_time_steps, num_features = np.shape(array)
+        array = np.reshape(array, newshape=(-1, num_instances*num_features))
+        print(np.shape(array))
+        scaler = StandardScaler()
+        array = scaler.fit_transform(array)
+        print(scaler.scale_)
+        array = np.reshape(array, newshape=(num_instances, num_time_steps, num_features))
+        return array, scaler
+
+    def apply_scaling_with_data(self, array, scaler):
+        print(np.shape(array))
+        num_instances, num_time_steps, num_features = np.shape(array)
+        array = np.reshape(array, newshape=(-1, num_instances*num_features))
+        print(np.shape(array))
+        array = scaler.transform(array)
+        array = np.reshape(array, newshape=(num_instances, num_time_steps, num_features))
+        return array
+
+    def reverse_scaling(self, array, scaler):
+        array_type = type(array)
+        if array_type.__module__ != np.__name__:  # not numpy
+            #array = torch.from_numpy(array).float()
+            #array = array.to(torch.cuda.current_device()).float()
+            array = torch.Tensor.cpu(array)
+        num_instances, num_time_steps, num_features = np.shape(array)
+        array = np.reshape(array, newshape=(-1, num_instances*num_features))
+        array = scaler.inverse_transform(array)
+        array = np.reshape(array, newshape=(num_instances, num_time_steps, num_features))
+
+        if array_type.__module__ != np.__name__:
+            array = torch.from_numpy(array).float()
+            array = array.to(torch.cuda.current_device()).float()
+        return array
+
+    '''
     def apply_scaling_eeg(self, array):
         num_instances, num_time_steps, num_features = np.shape(array)
         array = np.reshape(array, newshape=(-1, num_features))
@@ -90,13 +178,14 @@ class EEGTimeSeries:
         array = self._scaler.inverse_transform(array)
         array = np.reshape(array, newshape=(num_instances, num_time_steps, num_features))
         return array
+    '''
 
     '''
-    def apply_scaling(self, array):
+    def apply_scaling_old(self, array):
         dim = array.shape[-1]
         return (array - self._scaler.mean_[:dim]) / self._scaler.scale_[:dim]
 
-    def apply_scaling_df(self, df):
+    def apply_scaling_df_old(self, df):
         scaled = df.copy(deep=True)
         # scaled[self.target_cols] = self._scaler.transform(df[self.target_cols].values)
         cols = self.target_cols + self.exo_cols
@@ -106,7 +195,7 @@ class EEGTimeSeries:
         ) / self._scaler.scale_.astype(dtype)
         return scaled
 
-    def reverse_scaling_df(self, df):
+    def reverse_scaling_df_old(self, df):
         scaled = df.copy(deep=True)
         # scaled[self.target_cols] = self._scaler.inverse_transform(df[self.target_cols].values)
         cols = self.target_cols + self.exo_cols
@@ -116,7 +205,7 @@ class EEGTimeSeries:
         ) + self._scaler.mean_.astype(dtype)
         return scaled
 
-    def reverse_scaling(self, array):
+    def reverse_scaling_old(self, array):
         # self._scaler is fit for target_cols + exo_cols
         # if the array dim is less than this length we start
         # slicing from the target cols
@@ -203,7 +292,7 @@ class EEGTorchDset(Dataset):
         #print(f"i {i}")
         #print(f"len(self._slice_start_points) {len(self._slice_start_points)}")
         #print(f"len(self._trials_idxs) {len(self._trials_idxs)}")
-        series_slice = self.series.get_slice(
+        series_slice, series_slice_unscaled = self.series.get_slice(
             self.split,
             trial=self._trials_idxs[int(i/len(self._slice_start_points))],
             start=start,
@@ -220,7 +309,10 @@ class EEGTorchDset(Dataset):
         ctxt_y = series_slice[: self.context_points]
         trgt_y = series_slice[self.context_points :]
 
-        return self._torch(ctxt_x, ctxt_y, trgt_x, trgt_y)
+        ctxt_y_unscaled = series_slice_unscaled[: self.context_points]
+        trgt_y_unscaled = series_slice_unscaled[self.context_points :]
+
+        return self._torch(ctxt_x, ctxt_y, trgt_x, trgt_y), self._torch(ctxt_x, ctxt_y_unscaled, trgt_x, trgt_y_unscaled)
 
     @classmethod
     def add_cli(self, parser):
