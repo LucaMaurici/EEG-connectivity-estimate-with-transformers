@@ -1,0 +1,10 @@
+name;snr;rep;loss_transformer;order_transformer
+granger_test_transformer_SNR_3_def;inf;1;1.6182623427128235;6
+granger_test_transformer_SNR_3_def;inf;2;1.1381367570705556;6
+granger_test_transformer_SNR_3_def;inf;3;1.550426745799579;6
+granger_test_transformer_SNR_3_def;10000.0;1;8.164867674298009;6
+granger_test_transformer_SNR_3_def;10000.0;2;0.7997098282007914;6
+granger_test_transformer_SNR_3_def;10000.0;3;5.499957401618505;6
+granger_test_transformer_SNR_3_def;3.0;1;0.4973161920557577;6
+granger_test_transformer_SNR_3_def;3.0;2;0.8882770248558606;6
+granger_test_transformer_SNR_3_def;3;3;1.4560330573794495;6

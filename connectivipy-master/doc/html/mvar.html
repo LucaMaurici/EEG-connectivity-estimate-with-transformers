@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mvarmodel &#8212; ConnectiviPy 0.3.7 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="Connectivity" href="conn.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">ConnectiviPy 0.3.7 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="conn.html" title="Connectivity"
+             accesskey="P">previous</a> |
+          <a href="install.html" title="Installation"
+             accesskey="N">next</a> |
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mvarmodel">
+<span id="data"></span><h1>Mvarmodel<a class="headerlink" href="#mvarmodel" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="mvar-class">
+<h2>MVAR class<a class="headerlink" href="#mvar-class" title="Permalink to this headline">¶</a></h2>
+<p><em>Tools for MVAR parameters fitting</em></p>
+<span class="target" id="module-connectivipy.mvarmodel"></span><dl class="py class">
+<dt class="sig sig-object py" id="connectivipy.mvarmodel.Mvar">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">connectivipy.mvarmodel.</span></span><span class="sig-name descname"><span class="pre">Mvar</span></span><a class="reference internal" href="_modules/connectivipy/mvarmodel.html#Mvar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvarmodel.Mvar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static class <em>Mvar</em> to multivariete autoregressive model
+fitting. Possible methods are in <em>fitting_algorithms</em> where key is
+acronym of algorithm and value is a function from <em>mvar.fitting</em>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="connectivipy.mvarmodel.Mvar.fit">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvarmodel.html#Mvar.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvarmodel.Mvar.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mvar model fitting.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>data</em><span class="classifier">numpy.array</span></dt><dd><p>array with data shaped (k, N), k - channels nr,
+N-data points)</p>
+</dd>
+<dt><em>order</em> = None<span class="classifier">int</span></dt><dd><p>model order, when default None it estimates order using
+akaike order criteria.</p>
+</dd>
+<dt><em>method</em> = ‘yw’: str</dt><dd><p>name of mvar fitting algorithm, default Yule-Walker
+all avaiable methods you can find in <em>fitting_algorithms</em></p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>Av</em><span class="classifier">numpy.array</span></dt><dd><p>model coefficients (kXkXorder)</p>
+</dd>
+<dt><em>Vf</em><span class="classifier">numpy.array</span></dt><dd><p>reflection matrix (kXk)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="connectivipy.mvarmodel.Mvar.order_akaike">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">order_akaike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvarmodel.html#Mvar.order_akaike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvarmodel.Mvar.order_akaike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Akaike criterion of MVAR order estimation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><em>data</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>p_max</em> = 5<span class="classifier">int</span></dt><dd><p>maximal model order</p>
+</dd>
+<dt><em>method</em> = ‘yw’<span class="classifier">str</span></dt><dd><p>name of the mvar calculation method</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>best_order</em><span class="classifier">int</span></dt><dd><p>minimum of <em>crit</em> array</p>
+</dd>
+<dt><em>crit</em><span class="classifier">numpy.array</span></dt><dd><p>order criterion values for each value of order <em>p</em>
+starting from 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Blinowska K. J., Zygierewicz J., (2012) Practical</p>
+<blockquote>
+<div><p>biomedical signal analysis using MATLAB.
+Boca Raton: Taylor &amp; Francis.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="connectivipy.mvarmodel.Mvar.order_hq">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">order_hq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvarmodel.html#Mvar.order_hq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvarmodel.Mvar.order_hq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hannan-Quin criterion of MVAR order estimation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><em>data</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>p_max</em> = 5<span class="classifier">int</span></dt><dd><p>maximal model order</p>
+</dd>
+<dt><em>method</em> = ‘yw’<span class="classifier">str</span></dt><dd><p>name of the mvar calculation method</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>best_order</em><span class="classifier">int</span></dt><dd><p>minimum of <em>crit</em> array</p>
+</dd>
+<dt><em>crit</em><span class="classifier">numpy.array</span></dt><dd><p>order criterion values for each value of order <em>p</em>
+starting from 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Blinowska K. J., Zygierewicz J., (2012) Practical</p>
+<blockquote>
+<div><p>biomedical signal analysis using MATLAB.
+Boca Raton: Taylor &amp; Francis.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="connectivipy.mvarmodel.Mvar.order_schwartz">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">order_schwartz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvarmodel.html#Mvar.order_schwartz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvarmodel.Mvar.order_schwartz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schwartz criterion of MVAR order estimation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><em>data</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>p_max</em> = 5<span class="classifier">int</span></dt><dd><p>maximal model order</p>
+</dd>
+<dt><em>method</em> = ‘yw’<span class="classifier">str</span></dt><dd><p>name of the mvar calculation method</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>best_order</em><span class="classifier">int</span></dt><dd><p>minimum of <em>crit</em> array</p>
+</dd>
+<dt><em>crit</em><span class="classifier">numpy.array</span></dt><dd><p>order criterion values for each value of order <em>p</em>
+starting from 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Blinowska K. J., Zygierewicz J., (2012) Practical</p>
+<blockquote>
+<div><p>biomedical signal analysis using MATLAB.
+Boca Raton: Taylor &amp; Francis.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="connectivipy.mvarmodel.Mvar.order_fpe">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">order_fpe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvarmodel.html#Mvar.order_fpe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvarmodel.Mvar.order_fpe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Final Prediction Error criterion of MVAR order estimation.
+(not recommended)
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>data</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>p_max</em> = 5<span class="classifier">int</span></dt><dd><p>maximal model order</p>
+</dd>
+<dt><em>method</em> = ‘yw’<span class="classifier">str</span></dt><dd><p>name of the mvar calculation method</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>best_order</em><span class="classifier">int</span></dt><dd><p>minimum of <em>crit</em> array</p>
+</dd>
+<dt><em>crit</em><span class="classifier">numpy.array</span></dt><dd><p>order criterion values for each value of order <em>p</em>
+starting from 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Akaike H, (1970), Statistical predictor identification,</p>
+<blockquote>
+<div><p>Ann. Inst. Statist. Math., 22 203–217.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-connectivipy.mvar.fitting"></span><dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.mvar_gen">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">mvar_gen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Acf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#mvar_gen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.mvar_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generating data point from MVAR coefficiencs matrix <em>Acf</em>.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>Acf</em><span class="classifier">numpy.array</span></dt><dd><p>array in shape of (p,k,k) where <em>k</em> is number of channels and
+<em>p</em> is a model order.</p>
+</dd>
+<dt><em>npoints</em><span class="classifier">int</span></dt><dd><p>number of data points.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>y</em><span class="classifier">numpy.array</span></dt><dd><p>(k, npoints) data points</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.mvar_gen_inst">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">mvar_gen_inst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Acf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#mvar_gen_inst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.mvar_gen_inst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generating data point from matrix <em>A</em> with MVAR coefficients but it
+takes into account also zerolag interactions. So here Acf[0] means
+instantenous interaction not as in <em>mvar_gen</em> one data point lagged.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>Acf</em><span class="classifier">numpy.array</span></dt><dd><p>array in shape of (p,k,k) where <em>k</em> is number of channels and
+<em>p</em> is a model order.</p>
+</dd>
+<dt><em>npoints</em><span class="classifier">int</span></dt><dd><p>number of data points.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>y</em><span class="classifier">np.array</span></dt><dd><p>(k, n) data points</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.stability_mvar">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">stability_mvar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Acf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#stability_mvar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.stability_mvar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks stability of MVAR given its parameters matrix <em>Acf</em>.</p>
+<p>! Be careful when using ! not tested yet.</p>
+<p>Implemented according to:
+<cite>https://sccn.ucsd.edu/wiki/Chapter_3.1._Stationarity_and_Stability</cite></p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><em>Acf</em><span class="classifier">numpy.array</span></dt><dd><p>array in shape of (p,k,k) where <em>k</em> is number of channels and
+<em>p</em> is a model order.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>stable</em><span class="classifier">bool</span></dt><dd><p>stability flag - when True it is stable.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.meanncov">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">meanncov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#meanncov"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.meanncov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper to multichannel case of new covariance <em>ncov</em>.
+Args:</p>
+<blockquote>
+<div><dl>
+<dt><em>x</em><span class="classifier">numpy.array</span></dt><dd><p>multidimensional data (channels, data points, trials).</p>
+</dd>
+<dt><em>y</em> = []<span class="classifier">numpy.array</span></dt><dd><blockquote>
+<div><p>multidimensional data. If not given the autocovariance of <em>x</em>
+will be calculated.</p>
+</div></blockquote>
+<dl class="simple">
+<dt><em>p</em> = 0: int</dt><dd><p>window shift of input data. It can be negative as well.</p>
+</dd>
+<dt><em>norm</em> = True: bool</dt><dd><p>normalization - if True the result is divided by length of <em>x</em>,
+otherwise it is not.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>mcov</em><span class="classifier">np.array</span></dt><dd><p>covariance matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.ncov">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">ncov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#ncov"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.ncov" title="Permalink to this definition">¶</a></dt>
+<dd><p>New covariance.
+Args:</p>
+<blockquote>
+<div><dl>
+<dt><em>x</em><span class="classifier">numpy.array</span></dt><dd><p>onedimensional data.</p>
+</dd>
+<dt><em>y</em> = []<span class="classifier">numpy.array</span></dt><dd><blockquote>
+<div><p>onedimensional data. If not given the autocovariance of <em>x</em>
+will be calculated.</p>
+</div></blockquote>
+<dl class="simple">
+<dt><em>p</em> = 0: int</dt><dd><p>window shift of input data. It can be negative as well.</p>
+</dd>
+<dt><em>norm</em> = True: bool</dt><dd><p>normalization - if True the result is divided by length of <em>x</em>,
+otherwise it is not.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>kv</em><span class="classifier">np.array</span></dt><dd><p>covariance matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.vieiramorf">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">vieiramorf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#vieiramorf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.vieiramorf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute multichannel autoregresive model coefficients using
+Vieira-Morf algorithm.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>y</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>pmax</em>: int &gt;0</dt><dd><p>model order</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>Ar</em><span class="classifier">np.array</span></dt><dd><p>matrix with parameters matrix (p, k, k) where p - model order,
+k - nr of channels</p>
+</dd>
+<dt><em>Vr</em><span class="classifier">np.array</span></dt><dd><p>prediction error matrix (k,k)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Marple, Jr S. L., <a href="#id1"><span class="problematic" id="id2">*</span></a>Digital Spectral Analysis with</p>
+<blockquote>
+<div><p>Applications*, Prentice-Hall Signal Processing Series, 1987</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.nutallstrand">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">nutallstrand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#nutallstrand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.nutallstrand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute multichannel autoregresive model coefficients using
+Nutall-Strand algorithm.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>y</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>pmax</em>: int &gt;0</dt><dd><p>model order</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>Ar</em><span class="classifier">np.array</span></dt><dd><p>matrix with parameters matrix (p, k, k) where p - model order,
+k - nr of channels</p>
+</dd>
+<dt><em>Vr</em><span class="classifier">np.array</span></dt><dd><p>prediction error matrix (k,k)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Marple, Jr S. L., <a href="#id3"><span class="problematic" id="id4">*</span></a>Digital Spectral Analysis with</p>
+<blockquote>
+<div><p>Applications*, Prentice-Hall Signal Processing Series, 1987</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.fitting.yulewalker">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.fitting.</span></span><span class="sig-name descname"><span class="pre">yulewalker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/fitting.html#yulewalker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.fitting.yulewalker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute multichannel autoregresive model coefficients using
+Yule-Walker algorithm.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>y</em><span class="classifier">numpy.array</span></dt><dd><p>multichannel data in shape (k, n) for one trial case and
+(k, n, tr) for multitrial
+k - nr of channels, n -data points, tr - nr of trials</p>
+</dd>
+<dt><em>pmax</em>: int &gt;0</dt><dd><p>model order</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>Ar</em><span class="classifier">np.array</span></dt><dd><p>matrix with parameters matrix (p, k, k) where p - model order,
+k - nr of channels</p>
+</dd>
+<dt><em>Vr</em><span class="classifier">np.array</span></dt><dd><p>prediction error matrix (k,k)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>References:
+.. [1] Marple, Jr S. L., <a href="#id5"><span class="problematic" id="id6">*</span></a>Digital Spectral Analysis with</p>
+<blockquote>
+<div><p>Applications*, Prentice-Hall Signal Processing Series, 1987</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="additional">
+<h2>Additional<a class="headerlink" href="#additional" title="Permalink to this headline">¶</a></h2>
+<p><em>Additional tools</em></p>
+<span class="target" id="module-connectivipy.mvar.comp"></span><dl class="py function">
+<dt class="sig sig-object py" id="connectivipy.mvar.comp.ldl">
+<span class="sig-prename descclassname"><span class="pre">connectivipy.mvar.comp.</span></span><span class="sig-name descname"><span class="pre">ldl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/connectivipy/mvar/comp.html#ldl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#connectivipy.mvar.comp.ldl" title="Permalink to this definition">¶</a></dt>
+<dd><p>LDL decomposition (implementation from <em>en.wikipedia.org/wiki/Cholesky_decomposition</em>)
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>A</em><span class="classifier">numpy.array</span></dt><dd><p>matrix kXk</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><em>L</em>, <em>D</em>, <em>LT</em><span class="classifier">np.array</span></dt><dd><p><em>L</em> is a lower unit triangular matrix, <em>D</em> is a diagonal matrix
+and <em>LT</em> is a transpose of <em>L</em>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conn.html">Connectivity</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mvarmodel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mvar-class">MVAR class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithms">Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional">Additional</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Examples</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="conn.html" title="Connectivity"
+              >previous</a> |
+            <a href="install.html" title="Installation"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/mvar.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, Dominik Krzeminski.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

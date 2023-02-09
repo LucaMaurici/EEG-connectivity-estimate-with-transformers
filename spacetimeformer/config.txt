@@ -1,0 +1,3 @@
+run_name: hyperscanning_gc_PEBE-STPH_solo_1
+run_type: test
+run_id: ch0_sub_SNR_inf_1

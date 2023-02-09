@@ -1,0 +1,3 @@
+run_name: hyperscanning_am_1_gradient
+run_type: train
+run_id: ch30_sub_THDA-WITH_joint

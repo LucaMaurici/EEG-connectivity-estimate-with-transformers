@@ -1,0 +1,8 @@
+name;snr;rep;loss_transformer;order_transformer
+granger_test_transformer_SNR_4;inf;1;37.73104747791114;6
+granger_test_transformer_SNR_4;inf;1;33.10924193020723;6
+granger_test_transformer_SNR_4;inf;1;2.431415425375102;6
+granger_test_transformer_SNR_4;inf;1;2.431415425375102;6
+granger_test_transformer_SNR_4;inf;1;2.274591371606698;6
+granger_test_transformer_SNR_4;inf;1;2.6625700354021173;6
+granger_test_transformer_SNR_4;inf;1;2.7238939252801164;6

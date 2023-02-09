@@ -1,0 +1,347 @@
+wandb_version: 1
+
+? ''
+: desc: null
+  value: '{''model'': ''spacetimeformer'', ''dset'': ''eeg_social_memory'', ''data_path'':
+    ''auto'', ''context_points'': 10, ''target_points'': 1, ''time_resolution'': 1,
+    ''batch_size'': 64, ''workers'': 1, ''overfit'': False, ''gpus'': None, ''l2_coeff'':
+    0.001, ''learning_rate'': 0.0001, ''grad_clip_norm'': 0, ''linear_window'': 0,
+    ''use_revin'': False, ''loss'': ''mse'', ''linear_shared_weights'': False, ''use_seasonal_decomp'':
+    False, ''start_token_len'': 0, ''d_model'': 15, ''d_qk'': 4, ''d_v'': 4, ''n_heads'':
+    3, ''enc_layers'': 2, ''dec_layers'': 2, ''d_ff'': 40, ''attn_factor'': 5, ''dropout_emb'':
+    0.0, ''dropout_attn_matrix'': 0.0, ''dropout_qkv'': 0.0, ''dropout_ff'': 0.0,
+    ''dropout_attn_out'': 0.0, ''global_self_attn'': ''full'', ''global_cross_attn'':
+    ''full'', ''local_self_attn'': ''full'', ''local_cross_attn'': ''none'', ''activation'':
+    ''gelu'', ''norm'': ''batch'', ''init_lr'': 1e-10, ''base_lr'': 0.0005, ''warmup_steps'':
+    1000, ''decay_factor'': 0.65, ''initial_downsample_convs'': 0, ''class_loss_imp'':
+    0.0001, ''recon_loss_imp'': 0.0, ''intermediate_downsample_convs'': 0, ''time_emb_dim'':
+    6, ''performer_kernel'': ''relu'', ''performer_redraw_interval'': 100, ''embed_method'':
+    ''spatio-temporal'', ''attn_time_windows'': 1, ''use_shifted_time_windows'': False,
+    ''pos_emb_type'': ''abs'', ''no_final_norm'': False, ''no_val'': False, ''no_time'':
+    False, ''no_space'': False, ''no_given'': False, ''recon_mask_skip_all'': 1.0,
+    ''recon_mask_max_seq_len'': 5, ''recon_mask_drop_seq'': 0.2, ''recon_mask_drop_standard'':
+    0.1, ''recon_mask_drop_full'': 0.05, ''time_mask_start'': 1, ''time_mask_end'':
+    12, ''time_mask_anneal_steps'': 1000, ''time_mask_loss'': False, ''null_value'':
+    None, ''wandb'': True, ''plot'': False, ''attn_plot'': False, ''debug'': False,
+    ''run_name'': ''hyperscanning_am_1_gradient'', ''accumulate'': 1, ''val_check_interval'':
+    1.0, ''limit_val_batches'': 1.0, ''trials'': 1, ''run_id'': ''ch30_sub_SCDA-PAMA_solo''}'
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.1
+    code_path: code/train_eeg_hyperscanning.py
+    framework: lightning
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.9.6
+    start_time: 1666185025.268713
+    t:
+      1:
+      - 1
+      - 5
+      - 9
+      - 41
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 9
+      - 41
+      - 53
+      - 55
+      3:
+      - 2
+      - 16
+      - 17
+      - 23
+      - 37
+      4: 3.9.6
+      5: 0.13.1
+      8:
+      - 3
+      - 5
+      10:
+      - 3
+accumulate:
+  desc: null
+  value: 1
+activation:
+  desc: null
+  value: gelu
+attn_factor:
+  desc: null
+  value: 5
+attn_plot:
+  desc: null
+  value: false
+attn_time_windows:
+  desc: null
+  value: 1
+base_lr:
+  desc: null
+  value: 0.0005
+batch_size:
+  desc: null
+  value: 64
+class_loss_imp:
+  desc: null
+  value: 0.0001
+context_points:
+  desc: null
+  value: 10
+d_ff:
+  desc: null
+  value: 40
+d_layers:
+  desc: null
+  value: 2
+d_model:
+  desc: null
+  value: 15
+d_qk:
+  desc: null
+  value: 4
+d_queries_keys:
+  desc: null
+  value: 4
+d_v:
+  desc: null
+  value: 4
+d_values:
+  desc: null
+  value: 4
+d_x:
+  desc: null
+  value: 4
+d_yc:
+  desc: null
+  value: 30
+d_yt:
+  desc: null
+  value: 30
+data_path:
+  desc: null
+  value: auto
+debug:
+  desc: null
+  value: false
+dec_layers:
+  desc: null
+  value: 2
+decay_factor:
+  desc: null
+  value: 0.65
+dropout_attn_matrix:
+  desc: null
+  value: 0.0
+dropout_attn_out:
+  desc: null
+  value: 0.0
+dropout_emb:
+  desc: null
+  value: 0.0
+dropout_ff:
+  desc: null
+  value: 0.0
+dropout_qkv:
+  desc: null
+  value: 0.0
+dset:
+  desc: null
+  value: eeg_social_memory
+e_layers:
+  desc: null
+  value: 2
+embed_method:
+  desc: null
+  value: spatio-temporal
+enc_layers:
+  desc: null
+  value: 2
+global_cross_attn:
+  desc: null
+  value: full
+global_self_attn:
+  desc: null
+  value: full
+gpus:
+  desc: null
+  value: null
+grad_clip_norm:
+  desc: null
+  value: 0
+init_lr:
+  desc: null
+  value: 1.0e-10
+initial_downsample_convs:
+  desc: null
+  value: 0
+intermediate_downsample_convs:
+  desc: null
+  value: 0
+l2_coeff:
+  desc: null
+  value: 0.001
+learning_rate:
+  desc: null
+  value: 0.001
+limit_val_batches:
+  desc: null
+  value: 1.0
+linear_shared_weights:
+  desc: null
+  value: false
+linear_window:
+  desc: null
+  value: 0
+local_cross_attn:
+  desc: null
+  value: none
+local_self_attn:
+  desc: null
+  value: full
+loss:
+  desc: null
+  value: mse
+max_seq_len:
+  desc: null
+  value: 11
+model:
+  desc: null
+  value: spacetimeformer
+n_heads:
+  desc: null
+  value: 3
+no_final_norm:
+  desc: null
+  value: false
+no_given:
+  desc: null
+  value: false
+no_space:
+  desc: null
+  value: false
+no_time:
+  desc: null
+  value: false
+no_val:
+  desc: null
+  value: false
+norm:
+  desc: null
+  value: batch
+null_value:
+  desc: null
+  value: None
+overfit:
+  desc: null
+  value: false
+pad_value:
+  desc: null
+  value: None
+performer_kernel:
+  desc: null
+  value: relu
+performer_redraw_interval:
+  desc: null
+  value: 100
+performer_relu:
+  desc: null
+  value: true
+plot:
+  desc: null
+  value: false
+pos_emb_type:
+  desc: null
+  value: abs
+recon_loss_imp:
+  desc: null
+  value: 0.0
+recon_mask_drop_full:
+  desc: null
+  value: 0.05
+recon_mask_drop_seq:
+  desc: null
+  value: 0.2
+recon_mask_drop_standard:
+  desc: null
+  value: 0.1
+recon_mask_max_seq_len:
+  desc: null
+  value: 5
+recon_mask_skip_all:
+  desc: null
+  value: 1.0
+run_id:
+  desc: null
+  value: ch30_sub_SCDA-PAMA_solo
+run_name:
+  desc: null
+  value: hyperscanning_am_1_gradient
+start_token_len:
+  desc: null
+  value: 0
+target_points:
+  desc: null
+  value: 1
+time_emb_dim:
+  desc: null
+  value: 6
+time_mask_anneal_steps:
+  desc: null
+  value: 1000
+time_mask_end:
+  desc: null
+  value: 12
+time_mask_loss:
+  desc: null
+  value: false
+time_mask_start:
+  desc: null
+  value: 1
+time_resolution:
+  desc: null
+  value: 1
+trials:
+  desc: null
+  value: 1
+use_final_norm:
+  desc: null
+  value: true
+use_given:
+  desc: null
+  value: true
+use_revin:
+  desc: null
+  value: false
+use_seasonal_decomp:
+  desc: null
+  value: false
+use_shifted_time_windows:
+  desc: null
+  value: false
+use_space:
+  desc: null
+  value: true
+use_time:
+  desc: null
+  value: true
+use_val:
+  desc: null
+  value: true
+val_check_interval:
+  desc: null
+  value: 1.0
+verbose:
+  desc: null
+  value: true
+wandb:
+  desc: null
+  value: true
+warmup_steps:
+  desc: null
+  value: 1000
+workers:
+  desc: null
+  value: 1
