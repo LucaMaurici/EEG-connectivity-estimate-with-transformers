@@ -1,6 +1,6 @@
 # A novel transformer-based approach for estimating causal interaction in multichannel electroencephalographic data
 
-The "Thesis and Presentation" folder contains the thesis and Powerpoint presentation for my degree.
+The "Thesis and Presentation" folder contains the thesis and Powerpoint presentation of my Master's Degree.
 The "Spacetimeformer" folder provides access to the project code.
 In the "connectivipy-master" folder is a useful library for estimating the connectivity used in my project.
 
